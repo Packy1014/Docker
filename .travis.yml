@@ -1,0 +1,11 @@
+language: generic
+sudo: required
+services:
+    - docker
+
+before_install:
+    - cd DockerAndKubernetes/Section6
+    - docker build -t packy1014/frontend -f Dockerfile.dev .
+
+script:
+    - docker run -e CI=true packy1014/frontend npm run test
