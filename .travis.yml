@@ -4,7 +4,7 @@ services:
     - docker
 
 before_install:
-    - cd DockerAndKubernetes/Section6
+    - cd DockerAndKubernetes/Section6/frontend
     - docker build -t packy1014/frontend -f Dockerfile.dev .
 
 script:
