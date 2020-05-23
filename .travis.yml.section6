@@ -1,0 +1,23 @@
+language: generic
+sudo: required
+services:
+    - docker
+
+before_install:
+    - cd DockerAndKubernetes/Section6/frontend
+    - docker build -t packy1014/frontend -f Dockerfile.dev .
+
+script:
+    - docker run -e CI=true packy1014/frontend npm run test
+
+deploy:
+    provider: "elasticbeanstalk"
+    region: "ap-northeast-1"
+    app: "docker-frontend"
+    env: "DockerFrontend-env"
+    bucket_name: "elasticbeanstalk-ap-northeast-1-694048219002"
+    bucket_path: "docker-frontend"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY

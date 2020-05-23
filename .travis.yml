@@ -4,20 +4,19 @@ services:
     - docker
 
 before_install:
-    - cd DockerAndKubernetes/Section6/frontend
-    - docker build -t packy1014/frontend -f Dockerfile.dev .
+    - cd DockerAndKubernetes/Section7/complex
+    - docker build -t packy1014/complex_client_test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true packy1014/frontend npm run test
+    - docker run -e CI=true packy1014/complex_client_test npm test
 
-deploy:
-    provider: "elasticbeanstalk"
-    region: "ap-northeast-1"
-    app: "docker-frontend"
-    env: "DockerFrontend-env"
-    bucket_name: "elasticbeanstalk-ap-northeast-1-694048219002"
-    bucket_path: "docker-frontend"
-    on:
-        branch: master
-    access_key_id: $AWS_ACCESS_KEY_ID
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
+after_success:
+    - docker build -t packy1014/complex_client -f ./client/Dockerfile ./client
+    - docker build -t packy1014/complex_nginx -f ./client/Dockerfile ./nginx
+    - docker build -t packy1014/complex_server -f ./client/Dockerfile ./server
+    - docker build -t packy1014/complex_worker -f ./client/Dockerfile ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push packy1014/complex_client
+    - docker push packy1014/complex_nginx
+    - docker push packy1014/complex_server
+    - docker push packy1014/complex_worker
