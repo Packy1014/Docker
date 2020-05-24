@@ -1,0 +1,40 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "complex_client",
+            "image": "packy1014/complex_client",
+            "hostname:": "client",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "complex_server",
+            "image": "packy1014/complex_server",
+            "hostname:": "api",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "complex_worker",
+            "image": "packy1014/complex_worker",
+            "hostname:": "worker",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "complex_nginx",
+            "image": "packy1014/complex_nginx",
+            "hostname:": "nginx",
+            "essential": true,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 3050,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["client", "server"]
+        }
+    ]
+}

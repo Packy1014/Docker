@@ -12,11 +12,24 @@ script:
 
 after_success:
     - docker build -t packy1014/complex_client -f ./client/Dockerfile ./client
-    - docker build -t packy1014/complex_nginx -f ./client/Dockerfile ./nginx
-    - docker build -t packy1014/complex_server -f ./client/Dockerfile ./server
-    - docker build -t packy1014/complex_worker -f ./client/Dockerfile ./worker
+    - docker build -t packy1014/complex_nginx -f ./nginx/Dockerfile ./nginx
+    - docker build -t packy1014/complex_server -f ./server/Dockerfile ./server
+    - docker build -t packy1014/complex_worker -f ./worker/Dockerfile ./worker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     - docker push packy1014/complex_client
     - docker push packy1014/complex_nginx
     - docker push packy1014/complex_server
     - docker push packy1014/complex_worker
+
+deploy:
+    edge: true
+    provider: elasticbeanstalk
+    region: ap-northeast-1
+    app: complex
+    env: Complex-env
+    bucket_name: elasticbeanstalk-ap-northeast-1-694048219002
+    bucket_path: complex
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
