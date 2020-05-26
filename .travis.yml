@@ -25,10 +25,10 @@ deploy:
     edge: true
     provider: elasticbeanstalk
     region: ap-northeast-1
-    app: complex
-    env: Complex-env
+    app: test
+    env: Test-env
     bucket_name: elasticbeanstalk-ap-northeast-1-694048219002
-    bucket_path: complex
+    bucket_path: test
     on:
         branch: master
     access_key_id: $AWS_ACCESS_KEY_ID
